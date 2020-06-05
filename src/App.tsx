@@ -3,9 +3,11 @@ import './App.css';
 
 // JSX: Sintaxe de XML dentro do JavaScript
 
+import Routes from './routes';
+
 function App() {
   return (
-    <h1>Hello World</h1>
+    <Routes/>
   );
 }
 
