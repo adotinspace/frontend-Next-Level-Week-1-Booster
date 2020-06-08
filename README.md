@@ -1,2 +1,4 @@
 # nextLevelWeek-1-frontend
-# frontend do projeto Next Level Week #1 edição Booster
+# frontend do projeto "Ecoleta"
+# ----
+# frontend for the garbage collection point project "Ecoleta"
