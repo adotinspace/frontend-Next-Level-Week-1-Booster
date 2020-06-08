@@ -7,6 +7,7 @@ import axios from 'axios';
 import './styles.css';
 import logo from '../../assets/logo.svg';
 import { LeafletMouseEvent } from 'leaflet';
+import Dropzone from '../../components/Dropzone';
 
 // sempre que se cria um useState pra array ou object,
 // precisa manualmente informar o tipo da variável
@@ -46,6 +47,7 @@ const CreatePoint = () => {
   const [selectedCity, setSelectedCity] = useState('0');
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
+  const [selectedFile, setSelectedFile] = useState<File>();
 
   const history = useHistory();
 
@@ -125,13 +127,28 @@ const CreatePoint = () => {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
-    const {name, email, whatsapp} = formData;
+    const { name, email, whatsapp } = formData;
     const uf = selectedUf;
     const city = selectedCity;
     const [latitude, longitude] = selectedPosition;
     const items = selectedItems;
 
-    const data = {
+    const data = new FormData();
+    data.append('name', name);
+    data.append('email', email);
+    data.append('whatsapp', whatsapp);
+    data.append('uf', uf);
+    data.append('city', city);
+    data.append('latitude', String(latitude));
+    data.append('longitude', String(longitude));
+    data.append('items', items.join(', '));
+    
+    if (selectedFile) {
+      data.append('image', selectedFile);
+    }
+
+    /* JSON 
+      const data = {
       name,
       email,
       whatsapp,
@@ -141,6 +158,7 @@ const CreatePoint = () => {
       longitude,
       items
     };
+    */
 
     await api.post('points', data);
 
@@ -164,6 +182,8 @@ const CreatePoint = () => {
 
       <form onSubmit={handleSubmit}>
         <h1>Cadastro do <br />ponto de coleta</h1>
+
+        <Dropzone onFileUploaded={setSelectedFile} />
 
         <fieldset>
           <legend>
